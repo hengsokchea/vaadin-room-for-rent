@@ -7,8 +7,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.cookieconsent.CookieConsent.Position;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -42,9 +44,19 @@ public class RoomForm extends FormLayout {
 	    save.addClickShortcut(Key.ENTER); 
 	    close.addClickShortcut(Key.ESCAPE);
 
+	    save.addClickListener(event -> validateAndSave()); 
+	    
 	    return new HorizontalLayout(save, delete, close); 
 	  }
 	
+	private void validateAndSave() {
+		//Notification.show("Test Save",);
+		
+		if(binder.isValid()) {
+		    fireEvent(new SaveEvent(this, binder.getBean())); 
+		  }
+	}
+
 	//Events
 	public static abstract class RoomFormEvent extends ComponentEvent <RoomForm>{
 		private Room room;
@@ -56,7 +68,13 @@ public class RoomForm extends FormLayout {
 		public Room getRoom() {
 			return room;
 		}
-		
 	}
+	public static class SaveEvent extends RoomFormEvent {
+		SaveEvent(RoomForm source, Room room) {
+			    super(source, room);
+			  }
+	}
+		
+
 	
 }
