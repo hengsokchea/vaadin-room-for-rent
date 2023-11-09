@@ -36,7 +36,7 @@ public class RoomView extends VerticalLayout{
         
         add(getToolbar(),getContent());
               
-       // grid.setItems(service.findAllRoom());
+        grid.setItems(service.findAllRoom());
 	}
 	private HorizontalLayout getToolbar() {
 		filterText.setPlaceholder("Filter by name...");

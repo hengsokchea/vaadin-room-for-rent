@@ -11,9 +11,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 public class RoomForm extends FormLayout {
-	TextField txtname = new TextField("Room Name");
-	TextField txtdescription = new TextField("Room Description");
-	Checkbox txtactive = new Checkbox("Active");
+	TextField name = new TextField("Room Name");
+	TextField description = new TextField("Room Description");
+	Checkbox actived = new Checkbox("Active");
 	
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
@@ -21,7 +21,7 @@ public class RoomForm extends FormLayout {
 	public RoomForm() {
 		addClassName("room-form");
 		
-		 add(new H1("Form"),txtname, txtdescription, txtactive, createButtonsLayout());
+		 add(new H1("Form"),name, description, actived, createButtonsLayout());
 			 
 	}
 	private HorizontalLayout createButtonsLayout() {
