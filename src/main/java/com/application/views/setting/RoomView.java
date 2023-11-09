@@ -32,11 +32,34 @@ public class RoomView extends VerticalLayout{
         grid.setSizeFull();
         grid.setColumns("id", "name", "description","actived"); 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(e ->editRoom(e.getValue()));
         setSizeFull(); 
         
         add(getToolbar(),getContent());
               
-        grid.setItems(service.findAllRoom());
+     
+        updateList();
+        closeEditor();
+        
+	}
+	private void editRoom(Room room) {
+		if(room==null) {
+			closeEditor();
+		}else {
+			form.setRoom(room);
+			form.setVisible(true);
+			addClassName("editing");
+		}
+	}
+	private void closeEditor() {
+		form.setRoom(null);
+		form.setVisible(false);
+		removeClassName("editing");
+		
+	}
+	private void updateList() {
+		   grid.setItems(service.findAllRoom());
+		
 	}
 	private HorizontalLayout getToolbar() {
 		filterText.setPlaceholder("Filter by name...");
@@ -44,13 +67,18 @@ public class RoomView extends VerticalLayout{
         filterText.setValueChangeMode(ValueChangeMode.LAZY); 
 
         Button btn_add_room = new Button("Add Room");
+        btn_add_room.addClickListener(e ->addRoom());
 
         var toolbar = new HorizontalLayout(filterText, btn_add_room); 
         toolbar.addClassName("room_toolbar"); 
         return toolbar;
 	}
 	
-	 private Component getContent() {
+	 private void addRoom() {
+		grid.asSingleSelect().clear();
+		editRoom(new Room());
+	}
+	private Component getContent() {
 	        form = new RoomForm(); 
 	        form.setWidth("25em");
 	        HorizontalLayout content = new HorizontalLayout(grid, form);
