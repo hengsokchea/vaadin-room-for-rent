@@ -57,6 +57,7 @@ public class RoomView extends VerticalLayout{
 		removeClassName("editing");
 		
 	}
+
 	private void updateList() {
 		   grid.setItems(service.findAllRoom());
 		
@@ -81,6 +82,10 @@ public class RoomView extends VerticalLayout{
 	private Component getContent() {
 	        form = new RoomForm(); 
 	        form.setWidth("25em");
+	        
+	        form.addSaveListener(this::saveRoom);
+	      
+	        
 	        HorizontalLayout content = new HorizontalLayout(grid, form);
 	        content.setFlexGrow(2, grid); 
 	        content.setFlexGrow(1, form);
@@ -88,6 +93,12 @@ public class RoomView extends VerticalLayout{
 	        content.setSizeFull();
 	        return content;
 	    }
+	private void saveRoom(RoomForm.SaveEvent event) {
+		 service.saveRoom(event.getRoom());
+	        updateList();
+	        closeEditor();
+		
+	}
 	 
 }
 

@@ -2,6 +2,7 @@ package com.application.views.setting;
 
 import com.application.data.entity.Room;
 import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -13,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 
 public class RoomForm extends FormLayout {
@@ -32,7 +34,7 @@ public class RoomForm extends FormLayout {
 	}
 	public void setRoom(Room room) {
 		
-		binder.readBean(room);
+		binder.setBean(room);
 	}
 	private HorizontalLayout createButtonsLayout() {
 	    save.addThemeVariants(ButtonVariant.LUMO_PRIMARY); 
@@ -41,9 +43,29 @@ public class RoomForm extends FormLayout {
 
 	    save.addClickShortcut(Key.ENTER); 
 	    close.addClickShortcut(Key.ESCAPE);
+	    
+	    save.addClickListener(event -> validateAndSave()); // <1>
+	    
+	    binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid())); // <4>
 
 	    return new HorizontalLayout(save, delete, close); 
 	  }
+	 private void validateAndSave() {
+		    if(binder.isValid()) {
+		      fireEvent(new SaveEvent(this, binder.getBean())); // <6>
+		    }
+		  }
+	 
+	
+	public Registration addSaveListener(ComponentEventListener<SaveEvent> listener) {
+		    return addListener(SaveEvent.class, listener);
+	}
+	
+	 public static class SaveEvent extends RoomFormEvent {
+		    SaveEvent(RoomForm source, Room room) {
+		      super(source, room);
+		    }
+		  }  
 	
 	//Events
 	public static abstract class RoomFormEvent extends ComponentEvent <RoomForm>{
