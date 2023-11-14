@@ -83,7 +83,9 @@ public class RoomView extends VerticalLayout{
 	        form = new RoomForm(); 
 	        form.setWidth("25em");
 	        
-	        form.addSaveListener(this::saveRoom);
+	        form.addSaveListener(this::saveRoom); //1
+	        form.addDeleteListener(this::deleteRoom); // <2>
+	        form.addCloseListener(e -> closeEditor()); // <3>
 	      
 	        
 	        HorizontalLayout content = new HorizontalLayout(grid, form);
@@ -99,6 +101,12 @@ public class RoomView extends VerticalLayout{
 	        closeEditor();
 		
 	}
+    private void deleteRoom(RoomForm.DeleteEvent event) {
+        service.deleteRoom(event.getRoom());
+        updateList();
+        closeEditor();
+    }
+    
 	 
 }
 

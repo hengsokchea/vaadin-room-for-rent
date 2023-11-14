@@ -45,6 +45,8 @@ public class RoomForm extends FormLayout {
 	    close.addClickShortcut(Key.ESCAPE);
 	    
 	    save.addClickListener(event -> validateAndSave()); // <1>
+	    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, binder.getBean()))); // <2>
+	    close.addClickListener(event -> fireEvent(new CloseEvent(this))); // <3>
 	    
 	    binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid())); // <4>
 
@@ -60,12 +62,32 @@ public class RoomForm extends FormLayout {
 	public Registration addSaveListener(ComponentEventListener<SaveEvent> listener) {
 		    return addListener(SaveEvent.class, listener);
 	}
+	public Registration addDeleteListener(ComponentEventListener<DeleteEvent> listener) {
+		    return addListener(DeleteEvent.class, listener);
+	}
+	  public Registration addCloseListener(ComponentEventListener<CloseEvent> listener) {
+		    return addListener(CloseEvent.class, listener);
+	 }
 	
 	 public static class SaveEvent extends RoomFormEvent {
 		    SaveEvent(RoomForm source, Room room) {
 		      super(source, room);
 		    }
-		  }  
+	} 
+	 
+	 public static class DeleteEvent extends RoomFormEvent {
+		    DeleteEvent(RoomForm source, Room room) {
+		      super(source, room);
+		    }
+
+	}
+	 
+	  public static class CloseEvent extends RoomFormEvent {
+		    CloseEvent(RoomForm source) {
+		      super(source, null);
+		    }
+}
+	 
 	
 	//Events
 	public static abstract class RoomFormEvent extends ComponentEvent <RoomForm>{

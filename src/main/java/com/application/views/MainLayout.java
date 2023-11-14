@@ -15,6 +15,8 @@ import com.application.views.helloworld.HelloWorldView;
 import com.application.views.setting.PermissionView;
 import com.application.views.setting.RoomView;
 import com.application.views.setting.UserView;
+import com.application.views.setting.FloorView;
+
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -92,6 +94,7 @@ public class MainLayout extends AppLayout {
         settingSection.addItem(new SideNavItem("Users", UserView.class, VaadinIcon.GROUP.create()));
         settingSection.addItem(new SideNavItem("Permissions", PermissionView.class, VaadinIcon.KEY.create()));
         settingSection.addItem(new SideNavItem("Rooms", RoomView.class, VaadinIcon.KEY.create()));
+        settingSection.addItem(new SideNavItem("Floors", FloorView.class, VaadinIcon.KEY.create()));
         
         
         nav.addItem(new SideNavItem("Dashboard", DashboardView.class, VaadinIcon.DASHBOARD.create()));
