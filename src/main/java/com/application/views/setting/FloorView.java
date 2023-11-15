@@ -32,8 +32,13 @@ public class FloorView extends VerticalLayout{
 		
 		add(getToolBar(), getContent());
 		
+		 updateList();
+		 closeEditor();
+		
 	}
-
+    private void updateList() {
+        grid.setItems(service.findAllFloor());
+    }
 	private void configureGrid() {
         grid.addClassNames("floor-grid");
         grid.setSizeFull();
@@ -41,18 +46,35 @@ public class FloorView extends VerticalLayout{
        
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
-       // grid.asSingleSelect().addValueChangeListener(event -> editContact(event.getValue()));
+        grid.asSingleSelect().addValueChangeListener(event -> editFloor(event.getValue()));
     }
-	
+    public void editFloor(Floor floor) {
+        if (floor == null) {
+            closeEditor();
+        } else {
+            form.setFloor(floor);
+            form.setVisible(true);
+            addClassName("editing");
+        }
+    }
+    
     private void configureForm() {
         form = new FloorForm();
         form.setWidth("25em");
-        //form.addSaveListener(this::saveContact); // <1>
+        form.addSaveListener(this::saveFloor); // <1>
         //form.addDeleteListener(this::deleteContact); // <2>
         //form.addCloseListener(e -> closeEditor()); // <3>
     }
-    
-
+    private void saveFloor(FloorForm.SaveEvent event) {
+        service.saveFloor(event.getFloor());
+        updateList();
+        closeEditor();
+    }
+    private void closeEditor() {
+        form.setFloor(null);
+        form.setVisible(false);
+        removeClassName("editing");
+    }
     private HorizontalLayout getContent() {
         HorizontalLayout content = new HorizontalLayout(grid, form);
         content.setFlexGrow(2, grid);
@@ -65,9 +87,13 @@ public class FloorView extends VerticalLayout{
 	private HorizontalLayout getToolBar() {
 		 var toolbar = new HorizontalLayout( btn_add_form); 
 	        toolbar.addClassName("form_toolbar"); 
+	        btn_add_form.addClickListener(click -> addFloor());
 	        return toolbar;
 	}
-	
+    private void addFloor() {
+        grid.asSingleSelect().clear();
+        editFloor(new Floor());
+    }
 	
 	
 	
