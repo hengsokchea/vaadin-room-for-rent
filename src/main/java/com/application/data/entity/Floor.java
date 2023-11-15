@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "floor")
@@ -14,15 +15,17 @@ public class Floor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "floor_id",columnDefinition = "serial")
-
     private Long id;    
     
+	@NotBlank(message = "Floor Name is required")
     @Column(name = "floor_name")
     private String name = "";
+    
     
     @Column(name = "floor_description")
     private String description = "";
     
+
     @Column(name = "is_active")
     private Boolean active =true;
 

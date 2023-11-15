@@ -62,11 +62,16 @@ public class FloorView extends VerticalLayout{
         form = new FloorForm();
         form.setWidth("25em");
         form.addSaveListener(this::saveFloor); // <1>
-        //form.addDeleteListener(this::deleteContact); // <2>
-        //form.addCloseListener(e -> closeEditor()); // <3>
+        form.addDeleteListener(this::deleteFloor); // <2>
+        form.addCloseListener(e -> closeEditor()); // <3>
     }
     private void saveFloor(FloorForm.SaveEvent event) {
         service.saveFloor(event.getFloor());
+        updateList();
+        closeEditor();
+    }
+    private void deleteFloor(FloorForm.DeleteEvent event) {
+        service.deleteFloor(event.getFloor());
         updateList();
         closeEditor();
     }

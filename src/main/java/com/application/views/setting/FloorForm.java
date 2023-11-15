@@ -43,6 +43,8 @@ public class FloorForm extends FormLayout {
 		 close.addClickShortcut(Key.ESCAPE);
 		 
 		 save.addClickListener(event -> validateAndSave()); // <1>
+		 delete.addClickListener(event -> fireEvent(new DeleteEvent(this, binder.getBean()))); // <2>
+		 close.addClickListener(event -> fireEvent(new CloseEvent(this))); // <3>
 		 
 		 return new HorizontalLayout(save, delete, close);
 	}
@@ -59,6 +61,17 @@ public class FloorForm extends FormLayout {
 	      super(source, floor);
 	    }
 	}
+	  public static class DeleteEvent extends FloorFormEvent {
+		    DeleteEvent(FloorForm source, Floor floor) {
+		      super(source, floor);
+		    }
+
+	  }
+	  public static class CloseEvent extends FloorFormEvent {
+		    CloseEvent(FloorForm source) {
+		      super(source, null);
+		}
+	} 
 	
 	// Events
 	  public static abstract class FloorFormEvent extends ComponentEvent<FloorForm> {
@@ -77,5 +90,10 @@ public class FloorForm extends FormLayout {
 	 public Registration addSaveListener(ComponentEventListener<SaveEvent> listener) {
 		    return addListener(SaveEvent.class, listener);
 	}
-	
+	  public Registration addDeleteListener(ComponentEventListener<DeleteEvent> listener) {
+		    return addListener(DeleteEvent.class, listener);
+	}
+	 public Registration addCloseListener(ComponentEventListener<CloseEvent> listener) {
+		    return addListener(CloseEvent.class, listener);
+	  }
 }

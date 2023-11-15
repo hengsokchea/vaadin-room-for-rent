@@ -28,7 +28,7 @@ public class FloorService {
         repository.save(floor);
     }
     
-    public void deleteRoom(Floor floor) {
+    public void deleteFloor(Floor floor) {
     	repository.delete(floor);
     }
     
