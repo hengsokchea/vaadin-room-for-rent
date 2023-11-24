@@ -17,4 +17,15 @@ public class RoomService {
 	public List<Room> findAllRoom() {
 		return roomRepository.findAll();
 	}
+    public void saveRoom(Room room) {
+        if (room == null) { 
+            System.err.println("Contact is null. Are you sure you have connected your form to the application?");
+            return;
+        }
+        roomRepository.save(room);
+    }
+    
+    public void deleteRoom(Room room) {
+    	roomRepository.delete(room);
+    }
 }
