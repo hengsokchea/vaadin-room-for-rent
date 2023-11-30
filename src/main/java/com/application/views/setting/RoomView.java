@@ -13,6 +13,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import com.application.data.entity.*;
 import com.application.data.service.RoomService;
 
@@ -22,6 +25,8 @@ public class RoomView extends VerticalLayout{
 
 	TextField filterText = new TextField();
 	Grid<Room> grid = new Grid<>(Room.class); 
+   
+
 	RoomService service;
 	
 	RoomForm form;
@@ -31,6 +36,8 @@ public class RoomView extends VerticalLayout{
 		grid.addClassNames("room-grid"); 
         grid.setSizeFull();
         grid.setColumns("id", "name", "description","actived"); 
+       // grid.addColumn(floor->floor.getFloor().getName()).setHeader("Floor");
+        //grid.addColumn(room->room.getFloor().getName()).setHeader("Floor");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(e ->editRoom(e.getValue()));
         setSizeFull(); 
@@ -80,7 +87,7 @@ public class RoomView extends VerticalLayout{
 		editRoom(new Room());
 	}
 	private Component getContent() {
-	        form = new RoomForm(); 
+	        form = new RoomForm(service.findAllFloor()); 
 	        form.setWidth("25em");
 	        
 	        form.addSaveListener(this::saveRoom); //1

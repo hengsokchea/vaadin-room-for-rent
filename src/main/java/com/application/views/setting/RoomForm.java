@@ -1,6 +1,6 @@
 package com.application.views.setting;
 
-import com.application.data.entity.Room;
+
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
@@ -19,19 +19,29 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 
+import com.application.data.entity.Room;
+
+import java.util.List;
+
+import com.application.data.entity.Floor;
+
 public class RoomForm extends FormLayout {
 	Binder <Room> binder=new BeanValidationBinder <>(Room.class);
 	TextField name = new TextField("Room Name");
 	TextField description = new TextField("Room Description");
 	Checkbox actived = new Checkbox("Active");
-	
+	ComboBox<Floor> floor = new ComboBox<>("Floor");
+	  
 	Button save = new Button("Save");
 	Button delete = new Button("Delete");
 	Button close = new Button("Cancel");
-	public RoomForm() {
+	public RoomForm(List<Floor> floors) {
 		addClassName("room-form");
 		binder.bindInstanceFields(this);
-		 add(new H1("Form"),name, description, actived, createButtonsLayout());
+		
+		floor.setItems(floors);
+		floor.setItemLabelGenerator(Floor::getName);
+		 add(new H1("Form"),name,floor, description, actived, createButtonsLayout());
 			 
 	}
 	public void setRoom(Room room) {
@@ -56,12 +66,7 @@ public class RoomForm extends FormLayout {
 	    
 	    return new HorizontalLayout(save, delete, close); 
 	  }
-	 private void validateAndSave() {
-		    if(binder.isValid()) {
-		      fireEvent(new SaveEvent(this, binder.getBean())); // <6>
-		    }
-		  }
-	 
+
 	
 	public Registration addSaveListener(ComponentEventListener<SaveEvent> listener) {
 		    return addListener(SaveEvent.class, listener);
@@ -112,11 +117,6 @@ public class RoomForm extends FormLayout {
 		public Room getRoom() {
 			return room;
 		}
-	}
-	public static class SaveEvent extends RoomFormEvent {
-		SaveEvent(RoomForm source, Room room) {
-			    super(source, room);
-			  }
 	}
 		
 

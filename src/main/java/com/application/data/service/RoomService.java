@@ -4,15 +4,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.application.data.entity.Floor;
 import com.application.data.entity.Room;
+import com.application.data.repository.FloorRepository;
 import com.application.data.repository.RoomRepository;
 
 @Service 
 public class RoomService {
     private final RoomRepository roomRepository ;
+	private final FloorRepository floorRepository ;
 
-	public RoomService(RoomRepository roomRepository ) {
+	public RoomService(RoomRepository roomRepository,FloorRepository floorRepository ) {
 		this.roomRepository=roomRepository;
+		this.floorRepository=floorRepository;
 	}
 	public List<Room> findAllRoom() {
 		return roomRepository.findAll();
@@ -27,5 +31,10 @@ public class RoomService {
     
     public void deleteRoom(Room room) {
     	roomRepository.delete(room);
+    }
+    
+    public List<Floor> findAllFloor() {
+    	return	floorRepository.findAll();
+    	
     }
 }

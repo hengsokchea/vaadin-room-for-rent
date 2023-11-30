@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -26,6 +28,20 @@ public class Room {
     
     @Column(name = "is_active")
     private Boolean actived=true;
+    
+    @ManyToOne
+    @JoinColumn(name = "floor_id")
+    private Floor floor;
+    
+    
+
+	public Floor getFloor() {
+		return floor;
+	}
+
+	public void setFloor(Floor floor) {
+		this.floor = floor;
+	}
 
 	public Long getId() {
 		return id;

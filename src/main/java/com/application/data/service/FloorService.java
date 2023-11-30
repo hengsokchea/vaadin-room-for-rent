@@ -12,6 +12,7 @@ import com.application.data.repository.RoomRepository;
 @Service
 public class FloorService {
 	 private final FloorRepository repository ;
+	 
 
 	public FloorService(FloorRepository repository) {
 		super();
